@@ -2,10 +2,29 @@
 # Start wizard. Checks that this PC can run the harness and fixes what it
 # can (the KRDS submodule). Prints one line per check and, at the end, what
 # is left for you to do. Safe to run again. Run it from Git Bash:
-#   scripts/setup.sh
+#   scripts/setup.sh [folder-name]
+# The harness folder is called DEV by default; the name is free. Give a
+# name as the argument, or answer the prompt, and the script renames the
+# folder and continues from the new path.
 DEV="$(cd "$(dirname "$0")/.." && pwd)"
-cd "$DEV"
 export MSYS=winsymlinks:nativestrict
+
+name="${1:-}"
+if [ -z "$name" ] && [ -t 0 ] && [ -z "${HARNESS_RENAMED:-}" ]; then
+  read -r -p "Harness folder name [$(basename "$DEV")]: " name
+fi
+if [ -n "$name" ] && [ "$name" != "$(basename "$DEV")" ]; then
+  case "$name" in */*|*\*|.*) echo "FAIL: a plain folder name, please: $name" >&2; exit 2 ;; esac
+  new="$(dirname "$DEV")/$name"
+  [ ! -e "$new" ] || { echo "FAIL: $new already exists" >&2; exit 2; }
+  # Windows refuses to rename a folder while this script file is open inside
+  # it, so leave the folder and hand the rename to a fresh shell with exec.
+  cd "$(dirname "$DEV")"
+  export HARNESS_RENAMED=1
+  exec bash -c 'mv "$1" "$2" || { echo "FAIL: could not rename. Close other windows that are inside $1 and run again." >&2; exit 2; }
+    echo "renamed: $1 -> $2"; exec "$2/scripts/setup.sh"' _ "$DEV" "$new"
+fi
+cd "$DEV"
 todo=()
 ok()  { echo "ok    $1"; }
 bad() { echo "TODO  $1"; todo+=("$2"); }
@@ -44,7 +63,7 @@ else bad "KRDS submodule not downloaded" "git submodule update --init  (needs ne
 
 echo
 if [ ${#todo[@]} -eq 0 ]; then
-  echo "All checks pass. Next: run 'claude' in this folder and type /start"
+  echo "All checks pass. Next: run 'claude' in $(basename "$DEV")/ and type /start"
 else
   echo "${#todo[@]} thing(s) to do, then run scripts/setup.sh again:"
   for t in "${todo[@]}"; do echo "  - $t"; done

@@ -10,9 +10,11 @@ Claude Code로 바이브코딩할 때 쓰는 작업 규칙 묶음(하네스)입�
 mkdir -p ~/Desktop/Project && cd ~/Desktop/Project
 git clone https://github.com/ssiksick77/ssik-harness.git DEV
 cd DEV
-scripts/setup.sh   # 시작 마법사: 설치 상태를 검사하고 빠진 것을 알려 줍니다
+scripts/setup.sh   # 시작 마법사: 폴더 이름을 정하고, 설치 상태를 검사해 빠진 것을 알려 줍니다
 claude             # 그다음 /start 라고 치세요
 ```
+
+폴더 이름 `DEV`는 기본값일 뿐입니다. 마법사가 처음에 이름을 묻고(Enter면 그대로) 원하는 이름으로 바꿔 줍니다. 이 문서의 `DEV/`는 그 하네스 폴더를 뜻합니다.
 
 필요한 것: Git for Windows(Git Bash), GitHub 계정과 `gh`, Claude Code, Windows 개발자 모드(바로가기용). 마법사가 하나씩 확인합니다.
 
