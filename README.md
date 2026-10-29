@@ -4,7 +4,7 @@ Claude Code로 바이브코딩할 때 쓰는 작업 규칙 묶음(하네스)입�
 
 이 하네스는 제작자 한 사람의 작업 방식에 맞춰 만든 것입니다. 한국어 UI 규칙(KRDS), Windows + Git Bash, 프로젝트마다 비공개 GitHub 저장소, 매 변경마다 `scripts/check.sh` 같은 선택은 제작자의 필요에서 나왔습니다. 그대로 써도 되지만, 맞지 않는 부분은 바꿔 쓰는 것이 전제입니다. 어디를 바꾸면 되는지는 아래 "바꿔 쓰기"에 있습니다.
 
-처음이라면 [docs/harness-guide.html](docs/harness-guide.html)을 브라우저로 열어 읽으세요. 빈 Windows PC에서 첫 프로젝트까지 따라 할 수 있게 썼습니다.
+처음이라면 **[바이브코딩 하네스 안내](https://ssiksick77.github.io/ssik-harness/harness-guide.html)** 페이지를 읽으세요(저장소의 `docs/harness-guide.html`과 같은 내용). 빈 Windows PC에서 첫 프로젝트까지 따라 할 수 있게 썼습니다.
 
 ## 빠른 시작 (Windows, Git Bash)
 
