@@ -54,3 +54,7 @@ claude             # 그다음 /start 라고 치세요
 - `.claude/skills/impeccable` — [pbakaus/impeccable](https://github.com/pbakaus/impeccable), Apache 2.0 ([VENDOR.md](.claude/skills/impeccable/VENDOR.md))
 - `.claude/skills/break-ui` — MIT ([VENDOR.md](.claude/skills/break-ui/VENDOR.md))
 - `_tools/future-krds` — [humantonylee/future-krds](https://github.com/humantonylee/future-krds), ISC (서브모듈, KRDS 자료는 KRDS 약관을 따름)
+
+## 라이선스
+
+MIT ([LICENSE](LICENSE)). 위 외부 자료는 각자의 라이선스를 따릅니다.
