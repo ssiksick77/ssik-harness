@@ -51,6 +51,6 @@ claude             # 그다음 /start 라고 치세요
 
 ## 외부 자료
 
-- `.claude/skills/impeccable` — Apache 2.0
+- `.claude/skills/impeccable` — [pbakaus/impeccable](https://github.com/pbakaus/impeccable), Apache 2.0 ([VENDOR.md](.claude/skills/impeccable/VENDOR.md))
 - `.claude/skills/break-ui` — MIT ([VENDOR.md](.claude/skills/break-ui/VENDOR.md))
-- `_tools/future-krds` — [humantonylee/future-krds](https://github.com/humantonylee/future-krds)
+- `_tools/future-krds` — [humantonylee/future-krds](https://github.com/humantonylee/future-krds), ISC (서브모듈, KRDS 자료는 KRDS 약관을 따름)

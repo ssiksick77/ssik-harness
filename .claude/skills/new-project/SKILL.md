@@ -27,11 +27,11 @@ This works from `dev/` itself and from any project under it. Set `NAME`, `GROUP`
 
 ```bash
 NAME="<project name>"
-GROUP="<path under DEV/, or empty for a project directly under DEV/>"   # e.g. STdev, or STdev/product
+GROUP="<path under DEV/, or empty for a project directly under DEV/>"   # e.g. apps, or apps/mobile
 PROJ="$DEV/${GROUP:+$GROUP/}$NAME"
 ```
 
-A group is a folder directly under `DEV/` with no `progress.md` (see `new-group`). `GROUP` may go deeper into the group (`STdev/product`); the folders between the group and the project are plain folders with no rules of their own. List the existing groups with:
+A group is a folder directly under `DEV/` with no `progress.md` (see `new-group`). `GROUP` may go deeper into the group (`apps/mobile`); the folders between the group and the project are plain folders with no rules of their own. List the existing groups with:
 
 ```bash
 for g in "$DEV"/*/; do g="${g%/}"; case "$(basename "$g")" in _*) continue ;; esac; [ -f "$g/progress.md" ] || echo "$(basename "$g")"; done
@@ -39,7 +39,7 @@ for g in "$DEV"/*/; do g="${g%/}"; case "$(basename "$g")" in _*) continue ;; es
 
 ## Steps
 
-1. Ask the user for the project name if it is not given. Use a short, lowercase, hyphenated directory name. In the same message ask where the project goes: directly under `DEV/`, or a path inside an existing group (list the groups; the user may add a subfolder, for example `STdev/product`). If the user names a group that does not exist, run `new-group` first and come back.
+1. Ask the user for the project name if it is not given. Use a short, lowercase, hyphenated directory name. In the same message ask where the project goes: directly under `DEV/`, or a path inside an existing group (list the groups; the user may add a subfolder, for example `apps/mobile`). If the user names a group that does not exist, run `new-group` first and come back.
 2. Confirm that `$PROJ` does not exist. If it exists, stop and tell the user.
 3. Copy `$DEV/_template/` to `$PROJ/`.
 4. Ask the user, in one message, for the facts that fill `$PROJ/CLAUDE.md`. Do not ask again for anything Brainstorming already settled; the problem sentence is the purpose.
@@ -72,7 +72,7 @@ for g in "$DEV"/*/; do g="${g%/}"; case "$(basename "$g")" in _*) continue ;; es
    - `ideas.md`: append the "later" list from Brainstorming.
 10. Run `git init` in `$PROJ`. Stage the template files and `.claude/` (the links from step 8). Commit with the message `chore: scaffold project from template`.
     - Before the commit, run `git config user.email`. If it is empty, stop and tell the user to set the global git identity. Do not set it in the repository.
-    - When `GROUP` is set, register the project in the group repository (the first folder of `GROUP`, `$DEV/${GROUP%%/*}`): append the project path relative to that folder, with a leading and a trailing slash (`/$NAME/`, or `/product/$NAME/` when `GROUP` is `STdev/product`), to its `.gitignore`; add one line for the project under `## Projects` in its `CLAUDE.md`; commit both there with the message `chore: add project <name>`.
+    - When `GROUP` is set, register the project in the group repository (the first folder of `GROUP`, `$DEV/${GROUP%%/*}`): append the project path relative to that folder, with a leading and a trailing slash (`/$NAME/`, or `/product/$NAME/` when `GROUP` is `apps/mobile`), to its `.gitignore`; add one line for the project under `## Projects` in its `CLAUDE.md`; commit both there with the message `chore: add project <name>`.
 11. Create the GitHub repository and push (see "Git, GitHub, and personal information" in `dev/CLAUDE.md`):
     ```bash
     gh auth status || echo "NOT LOGGED IN"

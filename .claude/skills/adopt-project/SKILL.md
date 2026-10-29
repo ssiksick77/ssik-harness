@@ -14,13 +14,13 @@ Find the dev/ root the same way as `new-project` (walk up from the current direc
 ```bash
 SRC="<the directory the user named>"          # where the files are now
 NAME="$(basename "$SRC")"                      # or a name the user gives
-GROUP="<path under DEV/, or empty>"            # e.g. STdev or STdev/product; see new-project "Paths"
+GROUP="<path under DEV/, or empty>"            # e.g. apps or apps/mobile; see new-project "Paths"
 PROJ="$DEV/${GROUP:+$GROUP/}$NAME"
 ```
 
 ## Steps
 
-1. Confirm `$SRC` exists and holds files. If it is empty, stop and tell the user to use `new-project`. Ask once where the project goes: directly under `DEV/`, or a path inside an existing group (a subfolder such as `STdev/product` is fine). A group that does not exist yet is made with `new-group` first.
+1. Confirm `$SRC` exists and holds files. If it is empty, stop and tell the user to use `new-project`. Ask once where the project goes: directly under `DEV/`, or a path inside an existing group (a subfolder such as `apps/mobile` is fine). A group that does not exist yet is made with `new-group` first.
 2. If `$SRC` is not at `$PROJ`, move it there (`git mv` is not needed; the directory moves whole, with its `.git`). The harness works only for projects under `DEV/`: the shared `CLAUDE.md`, the version check, and `migrate` all find `DEV/` by walking up from the project. If the user does not want to move it, stop; do not adopt it in place.
 3. Secure the existing work before you add anything:
    - Warning: this commit is pushed to GitHub in step 11. Before you stage, look for secrets (`.env`, key files, tokens in config) and build output. If you find them and `.gitignore` does not exclude them, ask the user before you continue.
