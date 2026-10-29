@@ -1,0 +1,10 @@
+# DEV/ tracks only the shared harness. Each project has its own repository.
+/*/
+!/_template/
+!/_group-template/
+!/_tools/
+!/.claude/
+!/docs/
+!/migrations/
+!/scripts/
+/.claude/session-base.txt

@@ -1,0 +1,6 @@
+# Scripts and hooks must keep LF line endings; bash rejects CRLF ("set: pipefail: invalid option name").
+* text=auto eol=lf
+*.sh text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.exe binary

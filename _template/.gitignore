@@ -1,0 +1,14 @@
+# Harness: tool output and session state that must not be committed.
+.archify/
+.claude/session-base.txt
+.impeccable/cache/
+# Secrets and local config.
+.env
+.env.*
+*.local
+# Dependencies and build output: uncomment the lines for this stack.
+# node_modules/
+# dist/
+# .venv/
+# __pycache__/
+# target/

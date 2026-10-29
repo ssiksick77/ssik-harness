@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바이브코딩 하네스 안내</title>
+<meta name="description" content="배경지식 없이도 읽을 수 있는, AI 코딩용 하네스(작업 규칙 묶음) 설명과 따라 하기.">
+<style>
+  :root {
+    --bg: #fbfaf7; --fg: #1f1d1a; --muted: #5f5a52; --line: #e2ddd3;
+    --card: #ffffff; --accent: #a3451f; --accent-soft: #f6e4d9; --code-bg: #f1ede6;
+    --ok: #27683f;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17161a; --fg: #ece8e1; --muted: #aaa49a; --line: #332f36;
+      --card: #201e24; --accent: #e8926a; --accent-soft: #3a2a22; --code-bg: #2a272e;
+      --ok: #7fcf99;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    font-size: 17px; line-height: 1.7; word-break: keep-all;
+  }
+  header, main, footer { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  header { padding-top: 56px; padding-bottom: 24px; }
+  h1 { font-size: 2rem; line-height: 1.25; margin: 0 0 12px; }
+  .lead { font-size: 1.15rem; color: var(--muted); margin: 0; }
+  nav { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 10px 0; margin-top: 28px; }
+  nav ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: .95rem; }
+  a { color: var(--accent); }
+  nav a { text-decoration: none; }
+  nav a:hover { text-decoration: underline; }
+  section { padding: 40px 0 8px; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 { font-size: 1.5rem; margin: 0 0 6px; }
+  h2 small { display: block; font-size: .85rem; color: var(--muted); font-weight: normal; letter-spacing: .04em; }
+  h3 { font-size: 1.1rem; margin: 28px 0 6px; }
+  p { margin: 10px 0; }
+  code, pre { font-family: Consolas, "D2Coding", ui-monospace, monospace; font-size: .92em; }
+  code { background: var(--code-bg); padding: 1px 6px; border-radius: 4px; }
+  pre { background: var(--code-bg); padding: 12px 14px; border-radius: 8px; overflow-x: auto; margin: 10px 0; line-height: 1.5; }
+  pre code { background: none; padding: 0; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+  .card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+  .card p { margin: 4px 0; font-size: .95rem; }
+  .card .where { color: var(--muted); font-size: .85rem; }
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 16px 0; }
+  .steps > li { counter-increment: step; position: relative; padding: 14px 0 14px 52px; border-top: 1px solid var(--line); }
+  .steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: 14px;
+    width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--accent); color: var(--accent);
+    display: grid; place-items: center; font-weight: bold;
+  }
+  .steps h3 { margin: 4px 0 6px; }
+  .done { color: var(--ok); font-size: .95rem; margin-top: 8px; }
+  .done::before { content: "✓ 됐다는 표시: "; font-weight: bold; }
+  .note { background: var(--accent-soft); padding: 10px 14px; border-radius: 8px; margin: 14px 0; font-size: .95rem; }
+  dl { margin: 12px 0; }
+  dt { font-weight: bold; margin-top: 12px; }
+  dd { margin: 2px 0 0; }
+  details { border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; margin: 8px 0; background: var(--card); }
+  summary { cursor: pointer; font-weight: bold; }
+  figure { margin: 18px 0; }
+  .flow { font-size: .9rem; }
+  .flow-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 6px; }
+  .flow .box { flex: 1 1 120px; display: flex; flex-direction: column; gap: 2px; background: var(--card); border: 1.5px solid var(--fg); border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .flow .box span { color: var(--muted); font-size: .85rem; }
+  .flow .box.loop { background: var(--accent-soft); border-color: var(--accent); }
+  .flow .box.loop span { color: var(--fg); }
+  .flow .arrow { align-self: center; font-size: 1.3rem; }
+  .flow .arrow::before { content: "→"; }
+  .flow-back::before { content: "↺ "; }
+  .flow-back { margin-top: 10px; padding: 8px 12px; border: 1.5px dashed var(--fg); border-radius: 8px; text-align: center; }
+  @media (max-width: 640px) { .flow-row { flex-direction: column; } .flow .arrow { transform: rotate(90deg); } }
+  figcaption { font-size: .9rem; color: var(--muted); margin-top: 6px; }
+  footer { padding: 32px 16px 56px; color: var(--muted); font-size: .9rem; }
+  @media (max-width: 480px) { body { font-size: 16px; } h1 { font-size: 1.6rem; } .steps > li { padding-left: 46px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>바이브코딩 하네스 안내</h1>
+  <p class="lead">AI에게 코드를 맡길 때 흐름을 잃지 않도록 내가 쓰는 "작업 규칙 묶음"을 소개합니다. 개발을 몰라도 읽을 수 있게 썼고, 마지막에는 직접 따라 해 볼 수 있습니다.</p>
+  <nav aria-label="목차">
+    <ol>
+      <li><a href="#problem">1. 무엇이 문제인가</a></li>
+      <li><a href="#what">2. 하네스란</a></li>
+      <li><a href="#session">3. 세션 한 바퀴</a></li>
+      <li><a href="#follow">4. 따라 하기</a></li>
+      <li><a href="#glossary">5. 용어집과 FAQ</a></li>
+    </ol>
+  </nav>
+</header>
+
+<main>
+
+<section id="problem">
+  <h2><small>1</small>무엇이 문제인가</h2>
+  <p><strong>바이브코딩</strong>은 "이런 앱 만들어 줘"라고 말하면 AI가 코드를 써 주는 방식입니다. 처음 한두 시간은 마법 같습니다. 문제는 그 다음부터 생깁니다.</p>
+  <h3>AI는 어제 일을 기억하지 못한다</h3>
+  <p>AI와의 대화 한 판을 <strong>세션</strong>이라고 부릅니다. 세션이 끝나면 AI는 무엇을 왜 만들었는지 전부 잊습니다. 다음 날 "어제 하던 거 이어서"라고 말해도, AI에게 어제는 없습니다. 그래서 같은 설명을 매번 다시 하거나, AI가 다른 방향으로 다시 만들기 시작합니다.</p>
+  <h3>부탁하지 않은 것까지 고친다</h3>
+  <p>버튼 색 하나를 바꿔 달라고 했는데, AI가 "이왕이면" 하면서 옆 기능까지 손대는 일이 흔합니다. 좋은 의도지만, 어제까지 잘 되던 것이 오늘 깨지는 이유의 대부분이 이것입니다. 그리고 무엇이 바뀌었는지 사람은 모릅니다.</p>
+  <h3>"됐어요"가 정말 된 건지 알 수 없다</h3>
+  <p>AI는 자신 있게 "완료했습니다"라고 말합니다. 실제로 실행해 보면 안 되는 경우가 있습니다. 확인하는 절차가 없으면, 안 되는 것 위에 다음 것을 쌓게 됩니다.</p>
+  <p class="note">한 줄 요약: AI는 기억이 없고, 범위를 넘고, 자기 검사를 안 합니다. 하네스는 이 세 가지를 사람 대신 <em>절차</em>로 막는 장치입니다.</p>
+</section>
+
+<section id="what">
+  <h2><small>2</small>하네스란</h2>
+  <p><strong>하네스(harness)</strong>는 원래 말에 채우는 마구(馬具)입니다. 말의 힘은 그대로 두고 방향과 속도만 잡아 주죠. 여기서는 AI가 작업할 때 반드시 거치는 <strong>규칙과 절차의 묶음</strong>을 뜻합니다. 복잡한 프로그램이 아니라, 폴더 하나에 든 글 파일 몇 개와 작은 스크립트입니다.</p>
+  <p>내 하네스는 <code>DEV</code>라는 폴더 하나입니다. 그 안에서 프로젝트마다 폴더를 하나씩 만들고, 모든 프로젝트가 같은 규칙을 공유합니다. 핵심은 네 조각입니다.</p>
+
+  <div class="cards">
+    <div class="card">
+      <h3>CLAUDE.md — 규칙서</h3>
+      <p>AI가 세션을 시작할 때 자동으로 읽는 글 파일입니다. "한 번에 하나만 바꿔라", "검사 없이 저장하지 마라" 같은 규칙이 적혀 있습니다.</p>
+      <p class="where">어디에: <code>DEV/CLAUDE.md</code>(공통) + <code>프로젝트/CLAUDE.md</code>(그 프로젝트만의 사실)</p>
+    </div>
+    <div class="card">
+      <h3>skills — 절차서</h3>
+      <p>"새 프로젝트 만들기", "작업 마무리하기"처럼 자주 하는 일을 단계별로 적어 둔 파일들입니다. AI가 상황에 맞는 절차를 꺼내 그대로 따릅니다.</p>
+      <p class="where">어디에: <code>DEV/.claude/skills/</code> (brainstorm, new-project, wrap-up 등)</p>
+    </div>
+    <div class="card">
+      <h3>hooks — 자동 실행</h3>
+      <p>세션이 열리는 순간 자동으로 도는 작은 스크립트입니다. 지난번 목표, 다음에 할 일, 바뀐 파일 목록을 AI 앞에 올려 둡니다. 그래서 AI가 "어제"를 읽고 시작합니다.</p>
+      <p class="where">어디에: <code>DEV/.claude/hooks/session-start.sh</code></p>
+    </div>
+    <div class="card">
+      <h3>progress.md — 인수인계 노트</h3>
+      <p>프로젝트마다 하나씩 있는 글 파일입니다. 목표, 끝난 것, 하던 것, 결정한 이유, 다음 한 걸음. 세션이 끝날 때 AI가 고쳐 씁니다. 다음 세션의 AI는 이것만 읽고 이어 갑니다.</p>
+      <p class="where">어디에: <code>프로젝트/progress.md</code> (아이디어는 <code>ideas.md</code>)</p>
+    </div>
+  </div>
+
+  <p>여기에 작은 조각 하나가 더 있습니다. <strong><code>scripts/check.sh</code></strong>는 "이 프로젝트가 아직 멀쩡한가"를 검사하는 명령 모음입니다. AI는 무언가를 바꿀 때마다 이것을 돌리고, 통과해야만 저장(커밋)합니다. 검사가 하나도 없으면 일부러 실패하게 만들어 두었습니다. "검사 안 함"과 "검사 통과"는 다른 것이니까요.</p>
+</section>
+
+<section id="session">
+  <h2><small>3</small>세션 한 바퀴</h2>
+  <p>하네스를 쓰면 모든 세션이 같은 모양으로 돕니다. 시작하고, 요청을 또렷하게 만들고, 작게 고치며 검사하고, 기록을 남기고 끝납니다.</p>
+
+  <figure>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="box"><strong>① 세션 시작</strong><span>hook이 어제를 읽어 줌</span></div>
+        <div class="arrow"></div>
+        <div class="box"><strong>② 요청 정리</strong><span>모호하면 질문·brainstorm</span></div>
+        <div class="arrow"></div>
+        <div class="box loop"><strong>③ 작업 루프</strong><span>작게 한 가지 고치기</span><span>check.sh 검사</span><span>통과하면 커밋</span><span>(끝날 때까지 반복)</span></div>
+        <div class="arrow"></div>
+        <div class="box"><strong>④ 마무리</strong><span>wrap-up</span></div>
+      </div>
+      <div class="flow-back">progress.md 고쳐 쓰기 → 다음 세션의 ①로</div>
+    </div>
+    <figcaption>세션 한 바퀴. 기록이 다음 세션의 시작이 됩니다.</figcaption>
+  </figure>
+
+  <h3>① 세션 시작</h3>
+  <p>AI를 켜는 순간 hook이 돌아, 지난 목표와 "다음에 할 일", 그리고 지난번에 미뤄 둔 고칠 거리를 AI에게 보여 줍니다. 사람은 "이어서 하자" 한마디면 됩니다.</p>
+  <h3>② 요청 정리</h3>
+  <p>AI가 요청을 한 문장으로 되묻습니다. "누구를 위해 무엇을, 어떻게 확인할 수 있게." 두 가지로 읽힐 수 있는 요청이면 바로 코드를 쓰지 않고 질문합니다. 새 화면이나 새 기능처럼 큰 것이면 <strong>brainstorm</strong> 절차로 들어가, 첫 버전과 나중 것을 가르고 "끝났다는 기준"을 먼저 적습니다.</p>
+  <h3>③ 작업 루프</h3>
+  <p>되돌릴 수 있을 만큼 작게 한 가지를 고칩니다. <code>check.sh</code>를 돌립니다. 실패하면 원인을 고치고(검사를 빼는 건 금지), 통과하면 저장합니다. 요청 범위 밖의 "이왕이면"은 손대지 않고 <code>ideas.md</code>에 한 줄 적어 둡니다. 돈이나 저장된 데이터를 다루는 민감한 파일은 먼저 사람에게 묻습니다.</p>
+  <h3>④ 마무리</h3>
+  <p>끝나거나 막히면 <strong>wrap-up</strong> 절차가 돕니다. 남은 변경을 저장하고, <code>progress.md</code>를 고쳐 쓰고, 백업으로 밀어 올립니다. 내일의 AI는 이 파일만 읽고 ①로 돌아갑니다.</p>
+</section>
+
+<section id="follow">
+  <h2><small>4</small>따라 하기</h2>
+  <p>아무것도 없는 Windows PC에서 시작해 첫 프로젝트 세션까지 가는 길입니다. 설치 화면은 자주 바뀌니, 설치 자체는 공식 안내 링크를 따르고 이 페이지는 "순서"와 "됐다는 표시"만 챙깁니다. 한 시간쯤 잡으세요.</p>
+  <p class="note">용어가 낯설면 <a href="#glossary">5. 용어집</a>을 먼저 훑고 오세요. 터미널, 저장소, 커밋 정도만 알면 충분합니다.</p>
+
+  <ol class="steps">
+    <li>
+      <h3>Claude 구독</h3>
+      <p><a href="https://claude.ai" rel="noopener">claude.ai</a>에서 계정을 만들고 유료 요금제(Pro 이상)에 가입합니다. Claude Code는 이 계정으로 로그인해서 씁니다.</p>
+      <p class="done">claude.ai에 로그인하면 요금제 이름이 보입니다.</p>
+    </li>
+    <li>
+      <h3>Git 설치 (Git Bash 포함)</h3>
+      <p><a href="https://git-scm.com/download/win" rel="noopener">git-scm.com</a>에서 Git for Windows를 설치합니다. 선택지는 모두 기본값으로 두면 됩니다. 이 하네스는 Git Bash 안에서 돌아가므로, 이후 명령은 전부 <strong>Git Bash</strong> 창에서 칩니다. PowerShell이나 명령 프롬프트가 아닙니다.</p>
+      <p>Windows 설정에서 <strong>개발자 모드</strong>를 켭니다 (설정 → 시스템 → 개발자용). 하네스가 프로젝트마다 공통 규칙을 "바로가기"로 연결하는데, 이 모드가 꺼져 있으면 그 연결이 안 됩니다.</p>
+      <pre><code>git --version</code></pre>
+      <p class="done">Git Bash에서 위 명령을 치면 <code>git version 2.xx</code>가 나옵니다.</p>
+    </li>
+    <li>
+      <h3>Git에 이름 알려 주기</h3>
+      <p>저장할 때마다 "누가" 했는지 적히는데, 그 이름을 한 번만 정해 둡니다. 실명과 개인 이메일을 적지 않아도 됩니다. GitHub가 주는 가짜 주소(noreply)를 쓰면 공개돼도 안전합니다.</p>
+      <pre><code>git config --global user.name "별명"
+git config --global user.email "숫자+아이디@users.noreply.github.com"</code></pre>
+      <p class="done"><code>git config --global user.name</code>을 치면 방금 적은 별명이 나옵니다. noreply 주소는 다음 단계에서 GitHub 가입 후 설정 → Emails에서 복사합니다. 순서가 바뀌어도 괜찮습니다.</p>
+    </li>
+    <li>
+      <h3>GitHub 계정과 gh</h3>
+      <p><a href="https://github.com" rel="noopener">github.com</a>에 가입합니다. 코드 백업 창고입니다. 그다음 <a href="https://cli.github.com" rel="noopener">cli.github.com</a>에서 <strong>gh</strong>(GitHub 명령줄 도구)를 설치하고, Git Bash에서 로그인합니다. 하네스가 새 프로젝트마다 비공개 저장소를 자동으로 만들 때 이 도구를 씁니다.</p>
+      <pre><code>gh auth login</code></pre>
+      <p>물어보는 대로 GitHub.com, HTTPS, 브라우저 로그인을 고르면 됩니다.</p>
+      <p class="done"><code>gh auth status</code>를 치면 <code>Logged in to github.com</code>이 보입니다.</p>
+    </li>
+    <li>
+      <h3>Claude Code 설치</h3>
+      <p>Claude Code는 터미널에서 돌아가는 AI 코딩 도구입니다. 설치 방법은 <a href="https://code.claude.com/docs" rel="noopener">공식 문서</a>의 설치 안내를 따르세요. 설치가 끝나면 Git Bash에서 <code>claude</code>라고 치고 1번의 계정으로 로그인합니다.</p>
+      <pre><code>claude --version</code></pre>
+      <p class="done">버전 번호가 나오고, <code>claude</code>를 치면 대화 화면이 뜹니다. <code>/exit</code>로 나옵니다.</p>
+    </li>
+    <li>
+      <h3>하네스 받기</h3>
+      <p>하네스는 <code>DEV</code>라는 폴더 하나입니다. GitHub에서 복제(clone)합니다. 바탕화면 아래 <code>Project</code> 폴더에 두는 걸 기준으로 적었습니다.</p>
+      <pre><code>mkdir -p ~/Desktop/Project
+cd ~/Desktop/Project
+git clone https://github.com/ssiksick77/ssik-harness.git DEV
+cd DEV
+scripts/setup.sh</code></pre>
+      <p>마지막 줄이 <strong>시작 마법사</strong>입니다. 1~5번이 제대로 됐는지 하나씩 검사하고, 하네스가 쓰는 외부 자료(디자인 참고용)를 함께 받습니다. 빠진 게 있으면 무엇을 어떻게 고칠지 알려 줍니다. 모두 통과할 때까지 다시 실행해도 됩니다.</p>
+      <p class="done"><code>ls</code>를 치면 <code>CLAUDE.md</code>, <code>_template</code>, <code>VERSION</code>이 보이고, <code>cat VERSION</code>은 <code>v4.1</code>처럼 버전을 보여 줍니다.</p>
+    </li>
+    <li>
+      <h3>첫 세션: 새 프로젝트 만들기</h3>
+      <p>Git Bash에서 <code>DEV</code> 폴더에 있는 상태로 Claude Code를 켭니다.</p>
+      <pre><code>cd ~/Desktop/Project/DEV
+claude</code></pre>
+      <p>화면 위쪽에 "Session context"라는 블록이 먼저 찍히면 hook이 돈 것입니다. 그다음 <code>/start</code>라고 치면 AI가 환경을 한 번 더 확인하고 첫 프로젝트까지 안내합니다. 바로 시작해도 됩니다. 이렇게 말해 보세요.</p>
+      <pre><code>새 프로젝트를 시작하고 싶어. 할 일 목록 앱인데, 나 혼자 쓸 거야.</code></pre>
+      <p>AI는 바로 코드를 쓰지 않습니다. 먼저 <strong>brainstorm</strong> 절차로 들어가 "지금 뭐가 불편한지", "첫 버전에 꼭 필요한 것과 나중 것", "끝났다는 기준"을 묻습니다. 한 번에 한 가지씩 물으니 편하게 답하면 됩니다. 정리가 끝나면 <strong>new-project</strong> 절차가 프로젝트 폴더를 만들고, 규칙 파일을 채우고, GitHub에 비공개 저장소를 만들어 올립니다.</p>
+      <p class="done"><code>DEV/</code> 아래에 새 폴더가 생기고, 그 안에 <code>CLAUDE.md</code>, <code>progress.md</code>, <code>scripts/check.sh</code>가 있습니다. <code>progress.md</code>를 열면 방금 대화로 정한 목표가 적혀 있습니다.</p>
+    </li>
+    <li>
+      <h3>이어서 하기와 끝내기</h3>
+      <p>다음부터는 그 프로젝트 폴더에서 <code>claude</code>를 켜고 "이어서 하자"라고 하면 됩니다. 끝낼 때는 "마무리해 줘" 또는 <code>/wrap-up</code>이라고 하세요. AI가 저장하고 <code>progress.md</code>를 고쳐 쓰고 GitHub에 올립니다.</p>
+      <p class="done">마무리 뒤 AI가 네 줄로 보고합니다: 검사 결과, 저장(커밋) 목록, 올리기(push) 결과, 다음 할 일.</p>
+    </li>
+  </ol>
+
+  <p class="note">선택 사항: 하네스는 <code>ponytail</code>이라는 플러그인(코드를 최소로 유지하는 규칙)과 <code>security-audit</code>(보안 점검)도 쓸 줄 알지만, 없어도 돌아갑니다. 처음에는 건너뛰세요.</p>
+</section>
+
+<section id="glossary">
+  <h2><small>5</small>용어집과 FAQ</h2>
+  <h3>용어집</h3>
+  <dl>
+    <dt>바이브코딩</dt><dd>말로 설명하면 AI가 코드를 쓰는 개발 방식. 사람은 방향과 확인을 맡습니다.</dd>
+    <dt>세션</dt><dd>AI와의 대화 한 판. 끝나면 AI는 내용을 잊습니다.</dd>
+    <dt>하네스</dt><dd>AI가 작업할 때 반드시 거치는 규칙과 절차의 묶음. 여기서는 <code>DEV</code> 폴더.</dd>
+    <dt>터미널 / Git Bash</dt><dd>마우스 대신 글자로 명령을 치는 창. Git Bash는 Git과 함께 설치되는 터미널입니다.</dd>
+    <dt>Claude Code</dt><dd>터미널 안에서 돌아가는 Anthropic의 AI 코딩 도구. 파일을 읽고 고치고 명령을 실행합니다.</dd>
+    <dt>Git</dt><dd>파일의 변경 이력을 남기는 도구. "저장 시점"을 만들어 두고 언제든 되돌릴 수 있습니다.</dd>
+    <dt>커밋(commit)</dt><dd>Git의 저장 시점 하나. 무엇을 왜 바꿨는지 한 줄 메모가 붙습니다.</dd>
+    <dt>저장소(repository)</dt><dd>Git이 관리하는 폴더 하나. 프로젝트마다 하나씩 있습니다.</dd>
+    <dt>GitHub / 푸시(push)</dt><dd>GitHub는 저장소를 올려 두는 인터넷 창고. 푸시는 거기 올리는 동작입니다.</dd>
+    <dt>gh</dt><dd>GitHub를 터미널에서 다루는 도구. 하네스가 저장소를 자동으로 만들 때 씁니다.</dd>
+    <dt>CLAUDE.md</dt><dd>Claude Code가 세션 시작 때 자동으로 읽는 규칙 파일.</dd>
+    <dt>skill (스킬)</dt><dd>자주 하는 일의 절차를 적어 둔 파일. <code>/brainstorm</code>처럼 이름으로 부를 수 있습니다.</dd>
+    <dt>hook (훅)</dt><dd>정해진 순간(예: 세션 시작)에 자동으로 도는 작은 스크립트.</dd>
+    <dt>progress.md / ideas.md</dt><dd>인수인계 노트와 아이디어 보관함. 다음 세션이 읽고 이어 갑니다.</dd>
+    <dt>check.sh</dt><dd>"아직 멀쩡한가"를 검사하는 명령 모음. 통과해야 커밋합니다.</dd>
+    <dt>brainstorm / new-project / wrap-up</dt><dd>각각 "요청을 또렷하게 만들기", "프로젝트 폴더 만들기", "세션 마무리" 절차의 이름.</dd>
+  </dl>
+
+  <h3>FAQ</h3>
+  <details>
+    <summary>개발을 하나도 모르는데 쓸 수 있나요?</summary>
+    <p>처음 설치는 낯설지만 그 다음부터는 대화입니다. 하네스가 하는 일은 AI에게 "묻고, 작게 하고, 검사하고, 기록하라"를 강제하는 것이라, 오히려 모를수록 도움이 됩니다. 단, "끝났다는 기준"을 말로 정하는 일은 사람 몫입니다.</p>
+  </details>
+  <details>
+    <summary>그냥 Claude Code만 쓰면 안 되나요?</summary>
+    <p>됩니다. 작은 것 하루 만들고 끝낼 거면 하네스 없이가 더 빠릅니다. 하네스는 며칠 이상 이어 가는 것, 깨지면 아까운 것에 값어치가 있습니다.</p>
+  </details>
+  <details>
+    <summary>AI가 질문을 너무 많이 하지 않나요?</summary>
+    <p>규칙상 "답이 범위나 완료 기준을 바꾸는 것"만 묻게 되어 있습니다. 나머지는 스스로 정하고 한 줄로 알려 줍니다. 그래도 많다고 느끼면 첫 요청을 조금 더 구체적으로 적으면 줄어듭니다.</p>
+  </details>
+  <details>
+    <summary>check.sh에 뭘 넣어야 하나요?</summary>
+    <p>처음엔 "프로그램이 켜지는가" 한 줄이면 됩니다. new-project가 물어볼 때 모르겠으면 비워 두세요. 그러면 일부러 실패 상태가 되고, AI가 첫 작업으로 검사 한 줄을 넣자고 제안합니다.</p>
+  </details>
+  <details>
+    <summary>돈이 얼마나 드나요?</summary>
+    <p>Claude 구독료 외에는 없습니다. Git, gh, GitHub 비공개 저장소는 무료입니다.</p>
+  </details>
+  <details>
+    <summary>Mac이나 Linux에서는요?</summary>
+    <p>같은 순서입니다. 2단계의 Git Bash 대신 기본 터미널을 쓰고, 개발자 모드 설정은 필요 없습니다.</p>
+  </details>
+</section>
+
+</main>
+
+<footer>
+  <p>이 페이지는 하네스 v4.1 기준입니다. 막히면 나에게 물어보세요. 설치 화면은 자주 바뀌니 공식 문서가 이 글과 다르면 공식 문서를 따르세요.</p>
+</footer>
+
+</body>
+</html>

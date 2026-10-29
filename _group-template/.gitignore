@@ -1,0 +1,11 @@
+# Group repository: tracks the group CLAUDE.md and shared material only.
+# Each project below has its own repository. new-project and adopt-project add
+# one line per project with its path from this folder: "/<project>/" or
+# "/product/<project>/".
+
+# Harness: tool output and session state that must not be committed.
+.claude/session-base.txt
+# Secrets and local config.
+.env
+.env.*
+*.local
