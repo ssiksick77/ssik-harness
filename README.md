@@ -2,6 +2,8 @@
 
 Claude Code로 바이브코딩할 때 쓰는 작업 규칙 묶음(하네스)입니다. 규칙(`CLAUDE.md`), 절차(`.claude/skills/`), 프로젝트 템플릿(`_template/`), 세션 시작 hook을 한 폴더에 모아 두고, 프로젝트마다 바로가기로 연결해 씁니다.
 
+이 하네스는 제작자 한 사람의 작업 방식에 맞춰 만든 것입니다. 한국어 UI 규칙(KRDS), Windows + Git Bash, 프로젝트마다 비공개 GitHub 저장소, 매 변경마다 `scripts/check.sh` 같은 선택은 제작자의 필요에서 나왔습니다. 그대로 써도 되지만, 맞지 않는 부분은 바꿔 쓰는 것이 전제입니다. 어디를 바꾸면 되는지는 아래 "바꿔 쓰기"에 있습니다.
+
 처음이라면 [docs/harness-guide.html](docs/harness-guide.html)을 브라우저로 열어 읽으세요. 빈 Windows PC에서 첫 프로젝트까지 따라 할 수 있게 썼습니다.
 
 ## 빠른 시작 (Windows, Git Bash)
@@ -32,6 +34,20 @@ claude             # 그다음 /start 라고 치세요
 | `migrations/` | 하네스 버전 올릴 때 프로젝트에 적용할 변경 |
 
 프로젝트는 `DEV/<이름>/`에 생기고 각자 자기 git 저장소를 가집니다. 이 저장소는 하네스만 추적합니다.
+
+## 바꿔 쓰기
+
+모두 글 파일과 짧은 bash 스크립트입니다. 고친 뒤 `bash scripts/selftest.sh`로 깨진 곳이 없는지 확인하세요.
+
+| 바꾸고 싶은 것 | 어디를 고치나 |
+|---|---|
+| 작업 규칙(질문 시점, 커밋 절차, 검사 기준) | `CLAUDE.md`. 프로젝트 하나에만 적용할 규칙은 그 프로젝트의 `CLAUDE.md` |
+| 절차(브레인스토밍, 새 프로젝트, 마무리) | `.claude/skills/<이름>/SKILL.md`. 안 쓰는 스킬은 폴더째 지워도 됩니다 |
+| 세션 시작 때 보여 주는 정보 | `.claude/hooks/session-start.sh` |
+| 새 프로젝트의 기본 파일 | `_template/` |
+| UI 규칙(KRDS 사용 여부, 디자인 스킬) | `_template/DESIGN.md`의 KRDS 모드. KRDS가 필요 없으면 `ui-work`·`krds-*`·`_tools/future-krds`를 빼도 됩니다 |
+| GitHub 저장소를 자동으로 만들지 않기 | `new-project` 스킬의 `gh repo create` 단계 |
+| Mac / Linux | 그대로 동작합니다. 개발자 모드 단계만 건너뛰세요 |
 
 ## 외부 자료
 
